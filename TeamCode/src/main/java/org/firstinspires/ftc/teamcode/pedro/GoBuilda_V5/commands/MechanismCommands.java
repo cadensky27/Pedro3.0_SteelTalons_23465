@@ -1,7 +1,7 @@
 package org.firstinspires.ftc.teamcode.pedro.GoBuilda_V5.commands;
 import com.pedropathing.ivy.Command;
 import org.firstinspires.ftc.teamcode.pedro.GoBuilda_V5.core.Robot;
-import org.firstinspires.ftc.teamcode.pedro.GoBuilda_V5.config.V4Settings;
+import org.firstinspires.ftc.teamcode.pedro.GoBuilda_V5.config.V5Settings;
 import static com.pedropathing.ivy.commands.Commands.*;
 import static com.pedropathing.ivy.groups.Groups.*;
 
@@ -22,7 +22,7 @@ public final class MechanismCommands {
         return instant(r::stopShooter);
     }
 
-    public static Command preset(Robot r, V4Settings.Preset p) {
+    public static Command preset(Robot r, V5Settings.Preset p) {
         return instant(()->{
             if (r.shooter != null)r.shooter.preset(p);
         }
@@ -50,7 +50,7 @@ public final class MechanismCommands {
         );
     }
 
-    public static Command flowerArm(Robot r, V4Settings.ArmPosition p) {
+    public static Command flowerArm(Robot r, V5Settings.ArmPosition p) {
         return instant(()->{
             if (r.arm != null)r.arm.moveTo(p);
         }
@@ -126,9 +126,9 @@ public final class MechanismCommands {
     public static Command shootPreloads(Robot robot, long feedMs) {
         return sequential(
                 shooterOn(robot),
-                waitReady(robot, V4Settings.Feeder.READY_TIMEOUT_MS),
+                waitReady(robot, V5Settings.Feeder.READY_TIMEOUT_MS),
                 lazy(() -> robot.shooter != null && robot.shooter.ready()
-                        ? feederForMs(robot, feedMs, V4Settings.Feeder.FEED_WALL_TIMEOUT_MS)
+                        ? feederForMs(robot, feedMs, V5Settings.Feeder.FEED_WALL_TIMEOUT_MS)
                         : instant(() -> robot.events.record("AUTO skipped feed: RPM not ready")))
         );
     }

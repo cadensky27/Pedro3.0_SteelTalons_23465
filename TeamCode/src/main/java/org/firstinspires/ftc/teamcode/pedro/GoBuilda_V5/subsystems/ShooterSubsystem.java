@@ -1,27 +1,27 @@
 package org.firstinspires.ftc.teamcode.pedro.GoBuilda_V5.subsystems;
 import com.qualcomm.robotcore.hardware.*;
-import org.firstinspires.ftc.teamcode.pedro.GoBuilda_V5.config.V4Settings;
+import org.firstinspires.ftc.teamcode.pedro.GoBuilda_V5.config.V5Settings;
 /** Single 5203 6000-RPM 1:1 flywheel. Hub velocity PIDF owns the feedback loop. */
 public final class ShooterSubsystem {
     private final DcMotorEx motor;
-    private V4Settings.Preset preset = V4Settings.Preset.NORMAL;
+    private V5Settings.Preset preset = V5Settings.Preset.NORMAL;
     private boolean enabled, ready, readyEvent, rumbleArmed = true;
     /** Jam clear bypasses normal velocity PIDF and applies bounded reverse power. */
     private boolean jamClearRequested, jamClearReversing;
     private long stableSince = -1;
     private double target, actual, offset;
     private boolean initialReady;
-    private double p = V4Settings.Shooter.P;
-    private double d = V4Settings.Shooter.D;
-    private final double i = V4Settings.Shooter.I;
-    private final double nominalF = V4Settings.Shooter.F;
-    private double toleranceRpm = V4Settings.Shooter.READY_TOL_RPM;
-    private long stableMs = V4Settings.Shooter.READY_STABLE_MS;
+    private double p = V5Settings.Shooter.P;
+    private double d = V5Settings.Shooter.D;
+    private final double i = V5Settings.Shooter.I;
+    private final double nominalF = V5Settings.Shooter.F;
+    private double toleranceRpm = V5Settings.Shooter.READY_TOL_RPM;
+    private long stableMs = V5Settings.Shooter.READY_STABLE_MS;
     private double appliedP = Double.NaN, appliedD, appliedF;
     private Double testTargetRpm;
     public ShooterSubsystem(HardwareMap h) {
-        motor = h.get(DcMotorEx.class, V4Settings.Hardware.SHOOTER);
-        motor.setDirection(V4Settings.Shooter.REVERSED?DcMotorSimple.Direction.REVERSE:DcMotorSimple.Direction.FORWARD);
+        motor = h.get(DcMotorEx.class, V5Settings.Hardware.SHOOTER);
+        motor.setDirection(V5Settings.Shooter.REVERSED?DcMotorSimple.Direction.REVERSE:DcMotorSimple.Direction.FORWARD);
         motor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);
         motor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         motor.setVelocity(0);
@@ -52,23 +52,23 @@ public final class ShooterSubsystem {
     }
     private double baseline() {
         if (testTargetRpm != null) return testTargetRpm;
-        return preset == V4Settings.Preset.CLOSE?V4Settings.Shooter.CLOSE_RPM:preset == V4Settings.Preset.ANGLED?V4Settings.Shooter.ANGLED_RPM:V4Settings.Shooter.NORMAL_RPM;
+        return preset == V5Settings.Preset.CLOSE? V5Settings.Shooter.CLOSE_RPM:preset == V5Settings.Preset.ANGLED? V5Settings.Shooter.ANGLED_RPM: V5Settings.Shooter.NORMAL_RPM;
     }
-    public void preset(V4Settings.Preset p) {
+    public void preset(V5Settings.Preset p) {
         preset = p;
         testTargetRpm = null;
         offset = 0;
         rumbleArmed = true;
         reset();
     }
-    public V4Settings.Preset preset() {
+    public V5Settings.Preset preset() {
         return preset;
     }
     public void cycle() {
-        preset(preset == V4Settings.Preset.NORMAL?V4Settings.Preset.CLOSE:preset == V4Settings.Preset.CLOSE?V4Settings.Preset.ANGLED:V4Settings.Preset.NORMAL);
+        preset(preset == V5Settings.Preset.NORMAL? V5Settings.Preset.CLOSE:preset == V5Settings.Preset.CLOSE? V5Settings.Preset.ANGLED: V5Settings.Preset.NORMAL);
     }
     public void adjust(double delta) {
-        double nextOffset = Math.max(0, Math.min(V4Settings.Shooter.MAX_RPM, baseline() + offset + delta)) - baseline();
+        double nextOffset = Math.max(0, Math.min(V5Settings.Shooter.MAX_RPM, baseline() + offset + delta)) - baseline();
         if (nextOffset != offset) {
             offset = nextOffset;
             reset();
@@ -136,15 +136,15 @@ public final class ShooterSubsystem {
     public void update(double volts) {
         if (jamClearRequested) {
             double signedRpm = motor.getVelocity() * 60.0
-                    / V4Settings.Shooter.TICKS_PER_REV
-                    / V4Settings.Shooter.GEAR_RATIO;
+                    / V5Settings.Shooter.TICKS_PER_REV
+                    / V5Settings.Shooter.GEAR_RATIO;
             actual = Math.abs(signedRpm);
             target = 0;
 
             // Coast down first: never command reverse into a spinning flywheel.
             if (!jamClearReversing) {
                 motor.setVelocity(0);
-                if (actual <= V4Settings.JamClear.START_MAX_ABS_RPM) {
+                if (actual <= V5Settings.JamClear.START_MAX_ABS_RPM) {
                     motor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
                     jamClearReversing = true;
                 }
@@ -152,18 +152,18 @@ public final class ShooterSubsystem {
 
             if (jamClearReversing) {
                 double maxPower = Math.max(0, Math.min(1.0,
-                        V4Settings.JamClear.SHOOTER_MAX_REVERSE_POWER));
-                double targetRpm = -Math.abs(V4Settings.JamClear.SHOOTER_REVERSE_RPM);
+                        V5Settings.JamClear.SHOOTER_MAX_REVERSE_POWER));
+                double targetRpm = -Math.abs(V5Settings.JamClear.SHOOTER_REVERSE_RPM);
                 double error = targetRpm - signedRpm;
                 // Nonpositive power only: never drive forward during jam clear.
                 double power = Math.max(-maxPower, Math.min(0,
-                        error * V4Settings.JamClear.SHOOTER_REVERSE_KP));
+                        error * V5Settings.JamClear.SHOOTER_REVERSE_KP));
                 motor.setPower(power);
             }
             return;
         }
-        target = enabled?Math.max(0, Math.min(V4Settings.Shooter.MAX_RPM, baseline()+offset)):0;
-        double scale = V4Settings.Shooter.VOLTAGE_F_COMP && volts>1?Math.max(1/V4Settings.Shooter.MAX_F_SCALE, Math.min(V4Settings.Shooter.MAX_F_SCALE, V4Settings.Shooter.NOMINAL_VOLTS/volts)):1;
+        target = enabled?Math.max(0, Math.min(V5Settings.Shooter.MAX_RPM, baseline()+offset)):0;
+        double scale = V5Settings.Shooter.VOLTAGE_F_COMP && volts>1?Math.max(1/ V5Settings.Shooter.MAX_F_SCALE, Math.min(V5Settings.Shooter.MAX_F_SCALE, V5Settings.Shooter.NOMINAL_VOLTS/volts)):1;
         double f = nominalF * scale;
         if (appliedP != p || appliedD != d || Math.abs(appliedF - f) > .02) {
             motor.setPIDFCoefficients(DcMotor.RunMode.RUN_USING_ENCODER, new PIDFCoefficients(p, i, d, f));
@@ -171,8 +171,8 @@ public final class ShooterSubsystem {
             appliedD = d;
             appliedF = f;
         }
-        motor.setVelocity(target*V4Settings.Shooter.TICKS_PER_REV*V4Settings.Shooter.GEAR_RATIO/60.0);
-        actual = Math.abs(motor.getVelocity())*60.0/V4Settings.Shooter.TICKS_PER_REV/V4Settings.Shooter.GEAR_RATIO;
+        motor.setVelocity(target* V5Settings.Shooter.TICKS_PER_REV* V5Settings.Shooter.GEAR_RATIO/60.0);
+        actual = Math.abs(motor.getVelocity())*60.0/ V5Settings.Shooter.TICKS_PER_REV/ V5Settings.Shooter.GEAR_RATIO;
         if (!enabled || target <= 0 || Math.abs(actual - target) > toleranceRpm) {
             ready = false;
             stableSince = -1;

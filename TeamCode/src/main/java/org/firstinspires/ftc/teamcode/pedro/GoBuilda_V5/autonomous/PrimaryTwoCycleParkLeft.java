@@ -7,7 +7,7 @@ import com.pedropathing.math.Pose;
 import com.pedropathing.paths.Path;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import org.firstinspires.ftc.teamcode.pedro.GoBuilda_V5.commands.MechanismCommands;
-import org.firstinspires.ftc.teamcode.pedro.GoBuilda_V5.config.V4Settings;
+import org.firstinspires.ftc.teamcode.pedro.GoBuilda_V5.config.V5Settings;
 
 import static com.pedropathing.ivy.groups.Groups.sequential;
 import static com.pedropathing.ivy.pedro.PedroCommands.follow;
@@ -16,10 +16,10 @@ import static com.pedropathing.ivy.pedro.PedroCommands.follow;
 public final class PrimaryTwoCycleParkLeft extends BaseAuto {
     // ROUTINE SETTINGS
     private static final long PARTNER_DELAY_MS = 2000;
-    private static final long SPINUP_DELAY_MS = V4Settings.Feeder.READY_TIMEOUT_MS;
-    private static final long FEED_WALL_TIMEOUT_MS = V4Settings.Feeder.FEED_WALL_TIMEOUT_MS;
-    private static final V4Settings.Preset FIRST_SHOOTER_PRESET = V4Settings.Preset.NORMAL;
-    private static final V4Settings.Preset SECOND_SHOOTER_PRESET = V4Settings.Preset.NORMAL;
+    private static final long SPINUP_DELAY_MS = V5Settings.Feeder.READY_TIMEOUT_MS;
+    private static final long FEED_WALL_TIMEOUT_MS = V5Settings.Feeder.FEED_WALL_TIMEOUT_MS;
+    private static final V5Settings.Preset FIRST_SHOOTER_PRESET = V5Settings.Preset.NORMAL;
+    private static final V5Settings.Preset SECOND_SHOOTER_PRESET = V5Settings.Preset.NORMAL;
     private static final long FIRST_FEED_MS = 2800;
     private static final long SECOND_FEED_MS = 2800;
     private static final long GARDEN_COLLECTION_WAIT_MS = 2000;
@@ -69,7 +69,7 @@ public final class PrimaryTwoCycleParkLeft extends BaseAuto {
     }
 
     /** Both volleys use the existing timed spin-up, with the intake running. */
-    private Command shootWithIntake(V4Settings.Preset preset, long feedMs) {
+    private Command shootWithIntake(V5Settings.Preset preset, long feedMs) {
         return sequential(
                 MechanismCommands.preset(robot, preset),
                 MechanismCommands.intakeStart(robot),

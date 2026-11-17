@@ -3,7 +3,7 @@ package org.firstinspires.ftc.teamcode.pedro.GoBuilda_V5.navigation;
 import com.pedropathing.api.Paths;
 import com.pedropathing.follower.Follower;
 import com.pedropathing.math.Pose;
-import org.firstinspires.ftc.teamcode.pedro.GoBuilda_V5.config.V4Settings;
+import org.firstinspires.ftc.teamcode.pedro.GoBuilda_V5.config.V5Settings;
 
 public final class Navigator {
     public enum Result { IDLE, RUNNING, SUCCESS, CANCELLED, FAILED }
@@ -20,7 +20,7 @@ public final class Navigator {
     }
 
     /** Drive one straight line from the measured pose and interpolate its heading. */
-    public void start(V4Settings.Destination destination, boolean poseAvailable) {
+    public void start(V5Settings.Destination destination, boolean poseAvailable) {
         cancel();
         goal = FieldLibrary.at(destination);
         if (!poseAvailable || goal == null) {
@@ -41,7 +41,7 @@ public final class Navigator {
             return;
         }
         long now = System.nanoTime();
-        if ((now - startedAt) / 1_000_000L >= V4Settings.Navigation.BASIC_TIMEOUT_MS) {
+        if ((now - startedAt) / 1_000_000L >= V5Settings.Navigation.BASIC_TIMEOUT_MS) {
             finish(Result.FAILED, "Alignment timed out");
             return;
         }
@@ -50,8 +50,8 @@ public final class Navigator {
         double distance = Math.hypot(measured.x() - goal.x(), measured.y() - goal.y());
         double angleDifference = measured.heading() - goal.heading();
         double headingError = Math.atan2(Math.sin(angleDifference), Math.cos(angleDifference));
-        boolean withinTolerance = distance <= V4Settings.Navigation.BASIC_POS_TOL
-                && Math.abs(headingError) <= Math.toRadians(V4Settings.Navigation.BASIC_HEAD_TOL_DEG);
+        boolean withinTolerance = distance <= V5Settings.Navigation.BASIC_POS_TOL
+                && Math.abs(headingError) <= Math.toRadians(V5Settings.Navigation.BASIC_HEAD_TOL_DEG);
         if (follower.isBusy() || !withinTolerance) {
             stableSince = -1;
             return;
@@ -59,7 +59,7 @@ public final class Navigator {
         if (stableSince < 0) {
             stableSince = now;
         }
-        if ((now - stableSince) / 1_000_000L >= V4Settings.Navigation.ARRIVAL_STABLE_MS) {
+        if ((now - stableSince) / 1_000_000L >= V5Settings.Navigation.ARRIVAL_STABLE_MS) {
             finish(Result.SUCCESS, "Aligned");
         }
     }

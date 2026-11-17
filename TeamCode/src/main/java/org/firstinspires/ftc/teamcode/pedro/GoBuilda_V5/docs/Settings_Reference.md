@@ -28,7 +28,7 @@ V5 currently calls its centralized configuration class **`config/V4Settings.java
 ## Shooter-specific notes
 
 - Presets are **NORMAL**, **CLOSE**, **ANGLED**. Selecting a new preset clears its temporary match trim.
-- Match trim is temporary; it is **not** an automatic permanent edit to `V4Settings`.
+- Match trim is temporary; it is **not** an automatic permanent edit to `V5Settings`.
 - The Shooter + Feeder Tuner can adjust RPM, P, D, ready tolerance in RPM, and stability in milliseconds. Tuner changes are **session-local** until copied into settings.
 - Initial feeding waits for readiness. With pause-and-recover enabled, feeding stops when shooter speed falls below the pause threshold and resumes after it stays within the recovery band.
 - No fixed PIDF coefficients, voltage-compensation constants or absolute motor limits are prescribed here; read and verify the current source and robot.

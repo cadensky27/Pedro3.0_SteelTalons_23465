@@ -3,7 +3,7 @@ package org.firstinspires.ftc.teamcode.pedro.GoBuilda_V5.tools;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.VoltageSensor;
-import org.firstinspires.ftc.teamcode.pedro.GoBuilda_V5.config.V4Settings;
+import org.firstinspires.ftc.teamcode.pedro.GoBuilda_V5.config.V5Settings;
 import org.firstinspires.ftc.teamcode.pedro.GoBuilda_V5.subsystems.FeederSubsystem;
 import org.firstinspires.ftc.teamcode.pedro.GoBuilda_V5.subsystems.ShooterGateSubsystem;
 import org.firstinspires.ftc.teamcode.pedro.GoBuilda_V5.subsystems.ShooterSubsystem;
@@ -30,12 +30,12 @@ public final class ShooterFeederTuner extends OpMode {
     private FeederSubsystem feeder;
     private VoltageSensor voltage;
     private String error;
-    private double rpm = V4Settings.Shooter.NORMAL_RPM;
-    private double p = V4Settings.Shooter.P;
-    private double d = V4Settings.Shooter.D;
-    private double tolerance = V4Settings.Shooter.READY_TOL_RPM;
-    private long stability = V4Settings.Shooter.READY_STABLE_MS;
-    private boolean recovery = V4Settings.Shooter.RECOVERY_ENABLED;
+    private double rpm = V5Settings.Shooter.NORMAL_RPM;
+    private double p = V5Settings.Shooter.P;
+    private double d = V5Settings.Shooter.D;
+    private double tolerance = V5Settings.Shooter.READY_TOL_RPM;
+    private long stability = V5Settings.Shooter.READY_STABLE_MS;
+    private boolean recovery = V5Settings.Shooter.RECOVERY_ENABLED;
     private boolean previousUp, previousDown, previousLeft, previousRight, previousY;
     private boolean volleyStarted;
     private double minimumVolleyRpm = Double.NaN;
@@ -44,7 +44,7 @@ public final class ShooterFeederTuner extends OpMode {
     public void init() {
         try {
             shooter = new ShooterSubsystem(hardwareMap);
-            ShooterGateSubsystem gate = V4Settings.Hardware.SHOOT_GATE_ENABLED
+            ShooterGateSubsystem gate = V5Settings.Hardware.SHOOT_GATE_ENABLED
                     ? new ShooterGateSubsystem(hardwareMap) : null;
             feeder = new FeederSubsystem(hardwareMap, gate);
             voltage = hardwareMap.voltageSensor.iterator().hasNext()
@@ -95,7 +95,7 @@ public final class ShooterFeederTuner extends OpMode {
 
     private void adjust(Setting setting, double amount) {
         switch (setting) {
-            case RPM: rpm = Math.max(100, Math.min(V4Settings.Shooter.MAX_RPM, rpm + amount)); break;
+            case RPM: rpm = Math.max(100, Math.min(V5Settings.Shooter.MAX_RPM, rpm + amount)); break;
             case P: p = Math.max(0, p + amount); break;
             case D: d = Math.max(0, d + amount); break;
             case TOLERANCE: tolerance = Math.max(1, tolerance + amount); break;

@@ -6,6 +6,7 @@ import com.pedropathing.revhub.localizers.PinpointLocalizer;
 import com.pedropathing.tuning.autotune.Procedure;
 import com.pedropathing.tuning.autotune.Tuner;
 
+import org.firstinspires.ftc.teamcode.pedro.GoBuilda_V5.Constants_GoBuilda;
 import org.firstinspires.ftc.teamcode.pedro.procedures.ForesightTuner;
 import org.firstinspires.ftc.teamcode.pedro.procedures.MecanumTuner;
 import org.firstinspires.ftc.teamcode.pedro.procedures.PinpointTuner;
@@ -24,10 +25,10 @@ public class Tuning {
 
     @Tuner
     public static Procedure foresightTuner() {
-        return new ForesightTuner((hardwareMap) -> new PinpointLocalizer(hardwareMap, Constants.localizerConfig), (hardwareMap) -> new Mecanum(hardwareMap, Constants.drivetrainConfig));
+        return new ForesightTuner((hardwareMap) -> new PinpointLocalizer(hardwareMap, Constants_GoBuilda.localizerConfig), (hardwareMap) -> new Mecanum(hardwareMap, Constants_GoBuilda.drivetrainConfig));
     }
     @Tuner
     public static Procedure tests() {
-        return new Tests(hardwareMap -> new Mecanum(hardwareMap, Constants.drivetrainConfig), (hardwareMap -> new PinpointLocalizer(hardwareMap, Constants.localizerConfig)), null);
+        return new Tests(hardwareMap -> new Mecanum(hardwareMap, Constants_GoBuilda.drivetrainConfig), (hardwareMap -> new PinpointLocalizer(hardwareMap, Constants_GoBuilda.localizerConfig)), null);
     }
 }

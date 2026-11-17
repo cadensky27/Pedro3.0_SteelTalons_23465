@@ -6,7 +6,7 @@ import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
 import org.firstinspires.ftc.teamcode.pedro.GoBuilda_V5.Constants_GoBuilda;
-import org.firstinspires.ftc.teamcode.pedro.GoBuilda_V5.config.V4Settings;
+import org.firstinspires.ftc.teamcode.pedro.GoBuilda_V5.config.V5Settings;
 import org.firstinspires.ftc.teamcode.pedro.GoBuilda_V5.navigation.FieldLibrary;
 
 @TeleOp(name = "V5 Pinpoint Validation", group = "Tuning")
@@ -17,7 +17,7 @@ public final class PinpointVerification extends OpMode {
     @Override
     public void init() {
         try {
-            Pose start = FieldLibrary.require(V4Settings.Navigation.FALLBACK_START_POSE);
+            Pose start = FieldLibrary.require(V5Settings.Navigation.FALLBACK_START_POSE);
             pinpoint = new PinpointLocalizer(hardwareMap, Constants_GoBuilda.localizerConfig);
             pinpoint.setPose(start);
         } catch (RuntimeException failure) {
@@ -38,7 +38,7 @@ public final class PinpointVerification extends OpMode {
     }
 
     private void reportPose() {
-        telemetry.addData("Starting pose", V4Settings.Navigation.FALLBACK_START_POSE);
+        telemetry.addData("Starting pose", V5Settings.Navigation.FALLBACK_START_POSE);
         if (pinpoint != null) {
             pinpoint.update();
             Pose pose = pinpoint.pose();

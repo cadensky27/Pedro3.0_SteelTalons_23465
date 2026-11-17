@@ -190,7 +190,7 @@ the subsystem, using this same pattern.
   and readiness stability time in ms. Telemetry shows the tuned values,
   actual/target RPM, feeder state, and the lowest observed RPM during feeding.
 - **Keep a result:** Compare an unloaded spin-up and a loaded volley from the
-  same shooting location. Copy the chosen values into `V4Settings` after
+  same shooting location. Copy the chosen values into `V5Settings` after
   practice. Tuner edits are local to its session.
 - **Dashboard:** The separate shooter PIDF tuner is for a Dashboard-enabled
   SDK project.

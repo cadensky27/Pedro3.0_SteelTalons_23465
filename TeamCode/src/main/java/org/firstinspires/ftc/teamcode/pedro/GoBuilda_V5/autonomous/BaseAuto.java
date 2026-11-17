@@ -6,7 +6,7 @@ import com.pedropathing.ivy.Scheduler;
 import com.pedropathing.math.Pose;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import org.firstinspires.ftc.teamcode.pedro.GoBuilda_V5.Constants_GoBuilda;
-import org.firstinspires.ftc.teamcode.pedro.GoBuilda_V5.config.V4Settings;
+import org.firstinspires.ftc.teamcode.pedro.GoBuilda_V5.config.V5Settings;
 import org.firstinspires.ftc.teamcode.pedro.GoBuilda_V5.core.MatchHandoff;
 import org.firstinspires.ftc.teamcode.pedro.GoBuilda_V5.core.Robot;
 
@@ -32,8 +32,8 @@ public abstract class BaseAuto extends OpMode {
         return true;
     }
 
-    protected V4Settings.ArmPosition startingArmPosition() {
-        return V4Settings.ArmPosition.UP;
+    protected V5Settings.ArmPosition startingArmPosition() {
+        return V5Settings.ArmPosition.UP;
     }
 
     @Override

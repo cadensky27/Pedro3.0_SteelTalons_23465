@@ -2,7 +2,7 @@ package org.firstinspires.ftc.teamcode.pedro.GoBuilda_V5.navigation;
 
 import com.pedropathing.api.PoseFactory;
 import com.pedropathing.math.Pose;
-import org.firstinspires.ftc.teamcode.pedro.GoBuilda_V5.config.V4Settings.Destination;
+import org.firstinspires.ftc.teamcode.pedro.GoBuilda_V5.config.V5Settings.Destination;
 
 /** Shared Red-authored field frame. Place the robot at the equivalent start on either alliance. */
 public final class FieldLibrary {
@@ -17,7 +17,7 @@ public final class FieldLibrary {
             return null;
         }
         switch (destination) {
-            case SHOOT_1: return POSES.of(57.5, 11.5, 270);
+            case SHOOT_1: return POSES.of(57, 9, 270);
             case SHOOT_2: return POSES.of(58, 133.5, 90);
             case GARDEN: return POSES.of(10, 12, 270);
             case LOADING: return POSES.of(12, 108.5, 180);
@@ -27,8 +27,8 @@ public final class FieldLibrary {
             case FLOWER_2: return null;
             case FLOWER_3: return null;
             case FLOWER_4: return null;
-            case ANGLED_SHOT_1: POSES.of(15.8,16.5,225);
-            case ANGLED_SHOT_2: POSES.of(14,126.8,135);
+            case ANGLED_SHOT_1: return POSES.of(15.8,16.5,225);
+            case ANGLED_SHOT_2: return POSES.of(14,126.8,135);
 
             // Confirm these shared starts on the field before entering their coordinates.
             // Existing Autos keep the individual starting poses that match their paths.

@@ -2,7 +2,7 @@ package org.firstinspires.ftc.teamcode.pedro.GoBuilda_V5.subsystems;
 
 import com.qualcomm.robotcore.hardware.CRServo;
 import com.qualcomm.robotcore.hardware.HardwareMap;
-import org.firstinspires.ftc.teamcode.pedro.GoBuilda_V5.config.V4Settings;
+import org.firstinspires.ftc.teamcode.pedro.GoBuilda_V5.config.V5Settings;
 
 /** Owns optional gate timing and the roller. Call update every OpMode loop. */
 public final class FeederSubsystem {
@@ -24,7 +24,7 @@ public final class FeederSubsystem {
     private boolean forwardRequested;
     private boolean reverseRequested;
     private boolean requireInitialSpeed = true;
-    private boolean pauseForRecovery = V4Settings.Shooter.RECOVERY_ENABLED;
+    private boolean pauseForRecovery = V5Settings.Shooter.RECOVERY_ENABLED;
     private double reversePower;
     private long gateOpenedAt = -1;
     private long recoveredAt = -1;
@@ -32,7 +32,7 @@ public final class FeederSubsystem {
     private long forwardNanos;
 
     public FeederSubsystem(HardwareMap hardwareMap, ShooterGateSubsystem gate) {
-        servo = hardwareMap.get(CRServo.class, V4Settings.Hardware.FEEDER);
+        servo = hardwareMap.get(CRServo.class, V5Settings.Hardware.FEEDER);
         this.gate = gate;
         servo.setPower(0);
     }
@@ -55,11 +55,11 @@ public final class FeederSubsystem {
     }
 
     public void request() {
-        request(true, V4Settings.Shooter.RECOVERY_ENABLED);
+        request(true, V5Settings.Shooter.RECOVERY_ENABLED);
     }
 
     public void reverseHeld(boolean held) {
-        reverseHeld(held, V4Settings.Feeder.REVERSE_POWER);
+        reverseHeld(held, V5Settings.Feeder.REVERSE_POWER);
     }
 
     public void reverseHeld(boolean held, double power) {
@@ -115,7 +115,7 @@ public final class FeederSubsystem {
         } else if (!gateReady(now)) {
             setOutput(State.OPEN_GATE, 0, now);
         } else {
-            setOutput(State.FORWARD, V4Settings.Feeder.POWER, now);
+            setOutput(State.FORWARD, V5Settings.Feeder.POWER, now);
         }
     }
 
@@ -126,20 +126,20 @@ public final class FeederSubsystem {
         }
 
         if (state == State.PAUSED) {
-            double resumeRpm = Math.max(0, shooter.target() - V4Settings.Shooter.RECOVER_DROP_RPM);
+            double resumeRpm = Math.max(0, shooter.target() - V5Settings.Shooter.RECOVER_DROP_RPM);
             if (shooter.actual() < resumeRpm) {
                 recoveredAt = -1;
                 return true;
             }
             if (recoveredAt < 0) recoveredAt = now;
-            if ((now - recoveredAt) / 1_000_000L < V4Settings.Shooter.RECOVER_STABLE_MS) {
+            if ((now - recoveredAt) / 1_000_000L < V5Settings.Shooter.RECOVER_STABLE_MS) {
                 return true;
             }
             recoveredAt = -1;
             return false;
         }
         if (state != State.FORWARD && state != State.OPEN_GATE) return false;
-        double pauseRpm = Math.max(0, shooter.target() - V4Settings.Shooter.PAUSE_DROP_RPM);
+        double pauseRpm = Math.max(0, shooter.target() - V5Settings.Shooter.PAUSE_DROP_RPM);
         return shooter.actual() < pauseRpm;
     }
 
@@ -155,7 +155,7 @@ public final class FeederSubsystem {
             gate.open();
             gateOpenedAt = now;
         }
-        return (now - gateOpenedAt) / 1_000_000L >= V4Settings.Feeder.GATE_DELAY_MS;
+        return (now - gateOpenedAt) / 1_000_000L >= V5Settings.Feeder.GATE_DELAY_MS;
     }
 
     private void closeGate() {

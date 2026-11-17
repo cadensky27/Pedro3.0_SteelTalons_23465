@@ -11,8 +11,8 @@ package org.firstinspires.ftc.teamcode.pedro.GoBuilda_V5.config;
  * After testing a value in a standalone tuner, copy it here and redeploy.
  */
 
-public final class V4Settings {
-    private V4Settings() {
+public final class V5Settings {
+    private V5Settings() {
     }
     public enum Preset {
         NORMAL, CLOSE, ANGLED
@@ -82,7 +82,7 @@ public final class V4Settings {
      */
     public static final class Shooter {
         /** Default long-range/normal shooting target, RPM. */
-        public static double NORMAL_RPM = 3175;
+        public static double NORMAL_RPM = 3160;
         /** Close-distance shot target, RPM. */
         public static double CLOSE_RPM = 3000;
         /** Angled-shot target, RPM. */

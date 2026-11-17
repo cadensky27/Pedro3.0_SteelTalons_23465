@@ -29,7 +29,7 @@ Tune **mechanical reliability first**, then localization and drive, then shooter
 4. Test a realistic multi-ball volley. Note the **lowest observed RPM during feeding**, shot consistency, and time to recover.
 5. Repeat with recovery on/off. Initial readiness is always required; recovery changes behavior after shooter speed drops during feeding.
 6. Choose settings based on loaded-shot repeatability, not just unloaded steady-state RPM.
-7. Copy selected tuner values into `V4Settings` manually. The tuner session does not persist them.
+7. Copy selected tuner values into `V5Settings` manually. The tuner session does not persist them.
 
 **Important:** Verify the goBILDA motor encoder conversion, output gearing and actual flywheel RPM in the current code before interpreting telemetry. Never assume target ticks/s and RPM are interchangeable.
 

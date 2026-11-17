@@ -5,8 +5,8 @@ import com.pedropathing.math.Pose;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.hardware.Gamepad;
 import org.firstinspires.ftc.teamcode.pedro.GoBuilda_V5.Constants_GoBuilda;
-import org.firstinspires.ftc.teamcode.pedro.GoBuilda_V5.config.V4Settings;
-import org.firstinspires.ftc.teamcode.pedro.GoBuilda_V5.config.V4Settings.Destination;
+import org.firstinspires.ftc.teamcode.pedro.GoBuilda_V5.config.V5Settings;
+import org.firstinspires.ftc.teamcode.pedro.GoBuilda_V5.config.V5Settings.Destination;
 import org.firstinspires.ftc.teamcode.pedro.GoBuilda_V5.core.MatchHandoff;
 import org.firstinspires.ftc.teamcode.pedro.GoBuilda_V5.core.Robot;
 import org.firstinspires.ftc.teamcode.pedro.GoBuilda_V5.navigation.FieldLibrary;
@@ -90,13 +90,13 @@ public abstract class BaseTeleOp extends OpMode {
 
     @Override
     public final void init() {
-        recoverBetweenShots = V4Settings.Shooter.RECOVERY_ENABLED;
+        recoverBetweenShots = V5Settings.Shooter.RECOVERY_ENABLED;
         robot = new Robot(hardwareMap);
         Pose start = MatchHandoff.consume();
         if (start != null) {
             poseSource = "AUTO HANDOFF";
         } else {
-            Destination fallback = V4Settings.Navigation.FALLBACK_START_POSE;
+            Destination fallback = V5Settings.Navigation.FALLBACK_START_POSE;
             start = FieldLibrary.at(fallback);
             poseSource = "FALLBACK: " + fallback + (start == null ? " (unconfigured)" : "");
         }
@@ -126,7 +126,7 @@ public abstract class BaseTeleOp extends OpMode {
         telemetry.addData("Pose source", poseSource);
         if (poseAvailable && follower != null) reportPose();
         telemetry.addData("BASIC Navigator", driveError == null && poseAvailable
-                && V4Settings.Navigation.ENABLE ? "Available" : "Unavailable");
+                && V5Settings.Navigation.ENABLE ? "Available" : "Unavailable");
         telemetry.update();
     }
 
@@ -155,7 +155,7 @@ public abstract class BaseTeleOp extends OpMode {
 
         if (robot.shooter != null && robot.shooter.consumeReadyEvent()
                 && System.nanoTime() >= linedUpUntil) {
-            (twoDrivers() ? gamepad2 : gamepad1).rumble(V4Settings.Feedback.READY_MS);
+            (twoDrivers() ? gamepad2 : gamepad1).rumble(V5Settings.Feedback.READY_MS);
         }
         reportMatchStatus();
     }
@@ -163,7 +163,7 @@ public abstract class BaseTeleOp extends OpMode {
     private void handleDriveAndNavigator() {
         drive.setSlow((twoDrivers() ? driverSlow : singleSlow).read(gamepad1));
         if (robotCentricChord.step(DRIVE_MODE_MODIFIER.held(gamepad1), DRIVE_MODE_BUTTON.held(gamepad1),
-                V4Settings.Drive.CHORD_MS)) {
+                V5Settings.Drive.CHORD_MS)) {
             navigator.cancel();
             drive.toggleFieldCentric();
         }
@@ -175,9 +175,9 @@ public abstract class BaseTeleOp extends OpMode {
         Destination destination = readNavigatorShortcut();
 
         // Read the sticks even during path following so the driver can take over immediately.
-        if (stickInput > V4Settings.Drive.NAV_CANCEL_DEADZONE) {
+        if (stickInput > V5Settings.Drive.NAV_CANCEL_DEADZONE) {
             navigator.cancel();
-        } else if (destination != null && V4Settings.Navigation.ENABLE) {
+        } else if (destination != null && V5Settings.Navigation.ENABLE) {
             navigator.start(destination, poseAvailable);
         }
 
@@ -187,9 +187,9 @@ public abstract class BaseTeleOp extends OpMode {
         if (navigator.result() != lastNavigatorResult) {
             lastNavigatorResult = navigator.result();
             if (lastNavigatorResult == Navigator.Result.SUCCESS) {
-                gamepad1.rumble(V4Settings.Feedback.NAV_SUCCESS_MS);
+                gamepad1.rumble(V5Settings.Feedback.NAV_SUCCESS_MS);
             } else if (lastNavigatorResult == Navigator.Result.FAILED) {
-                gamepad1.rumble(V4Settings.Feedback.NAV_FAILURE_MS);
+                gamepad1.rumble(V5Settings.Feedback.NAV_FAILURE_MS);
             }
         }
     }
@@ -245,9 +245,9 @@ public abstract class BaseTeleOp extends OpMode {
         int trim = 0;
         if (twoDrivers()) {
             boolean plain = !operator.share;
-            if (operatorClose.read(operator, plain)) robot.shooter.preset(V4Settings.Preset.CLOSE);
-            if (operatorNormal.read(operator, plain)) robot.shooter.preset(V4Settings.Preset.NORMAL);
-            if (operatorAngled.read(operator, plain)) robot.shooter.preset(V4Settings.Preset.ANGLED);
+            if (operatorClose.read(operator, plain)) robot.shooter.preset(V5Settings.Preset.CLOSE);
+            if (operatorNormal.read(operator, plain)) robot.shooter.preset(V5Settings.Preset.NORMAL);
+            if (operatorAngled.read(operator, plain)) robot.shooter.preset(V5Settings.Preset.ANGLED);
             if (operatorRpmDown.read(operator, plain)) trim -= 5;
             if (operatorRpmUp.read(operator, plain)) trim += 5;
         } else {
@@ -257,7 +257,7 @@ public abstract class BaseTeleOp extends OpMode {
             if (singleRpmDown10.read(operator, operator.share)) trim -= 10;
             if (singleRpmUp10.read(operator, operator.share)) trim += 10;
         }
-        if (V4Settings.Shooter.RPM_ADJUST_ENABLED && trim != 0) robot.shooter.adjust(trim);
+        if (V5Settings.Shooter.RPM_ADJUST_ENABLED && trim != 0) robot.shooter.adjust(trim);
     }
 
     /** Returns true while full reverse owns the mechanisms, including the release loop. */
@@ -265,7 +265,7 @@ public abstract class BaseTeleOp extends OpMode {
         Gamepad operator = twoDrivers() ? gamepad2 : gamepad1;
         boolean held = (twoDrivers() ? operatorFullReverse : singleFullReverse)
                 .read(operator, !operator.share && !operator.options);
-        if (!V4Settings.JamClear.ENABLED || !held) {
+        if (!V5Settings.JamClear.ENABLED || !held) {
             reverseHoldStarted = -1;
             if (!fullReverseActive) return false;
 
@@ -280,7 +280,7 @@ public abstract class BaseTeleOp extends OpMode {
             return true;
         }
         if (reverseHoldStarted < 0) reverseHoldStarted = System.nanoTime();
-        if ((System.nanoTime() - reverseHoldStarted) / 1_000_000L < V4Settings.JamClear.ACTIVATION_HOLD_MS) {
+        if ((System.nanoTime() - reverseHoldStarted) / 1_000_000L < V5Settings.JamClear.ACTIVATION_HOLD_MS) {
             return false;
         }
 
@@ -289,15 +289,15 @@ public abstract class BaseTeleOp extends OpMode {
         if (robot.shooter != null) robot.shooter.jamClearHeld(true);
         // Let the flywheel coast before pushing pieces backward through the system.
         boolean canReverse = robot.shooter == null || robot.shooter.reversing();
-        if (robot.feeder != null) robot.feeder.reverseHeld(canReverse, V4Settings.JamClear.FEEDER_REVERSE_POWER);
-        if (robot.intake != null) robot.intake.setDirection(canReverse && V4Settings.JamClear.REVERSE_INTAKE ? -1 : 0);
+        if (robot.feeder != null) robot.feeder.reverseHeld(canReverse, V5Settings.JamClear.FEEDER_REVERSE_POWER);
+        if (robot.intake != null) robot.intake.setDirection(canReverse && V5Settings.JamClear.REVERSE_INTAKE ? -1 : 0);
         return true;
     }
 
     private void sendLinedUpSignal() {
-        int pulse = V4Settings.Feedback.LINED_UP_PULSE_MS;
-        int gap = V4Settings.Feedback.LINED_UP_GAP_MS;
-        double power = V4Settings.Feedback.POWER;
+        int pulse = V5Settings.Feedback.LINED_UP_PULSE_MS;
+        int gap = V5Settings.Feedback.LINED_UP_GAP_MS;
+        double power = V5Settings.Feedback.POWER;
         gamepad2.runRumbleEffect(new Gamepad.RumbleEffect.Builder()
                 .addStep(power, power, pulse)
                 .addStep(0, 0, gap)
@@ -323,7 +323,7 @@ public abstract class BaseTeleOp extends OpMode {
 
     private void reportMatchStatus() {
         long now = System.nanoTime();
-        if ((now - telemetryAt) / 1_000_000L < V4Settings.Telemetry.REFRESH_MS) return;
+        if ((now - telemetryAt) / 1_000_000L < V5Settings.Telemetry.REFRESH_MS) return;
         telemetryAt = now;
         if (driveError != null) {
             telemetry.addData("Drive error", driveError);
@@ -331,7 +331,7 @@ public abstract class BaseTeleOp extends OpMode {
             telemetry.addData("Drive", "%s | %s",
                     drive.fieldCentric(poseAvailable) ? "Field-centric" : "Robot-centric",
                     drive.slow() ? "Slow" : "Normal");
-            telemetry.addData("Navigator", V4Settings.Navigation.ENABLE ? navigator.status() : "Disabled");
+            telemetry.addData("Navigator", V5Settings.Navigation.ENABLE ? navigator.status() : "Disabled");
         }
         telemetry.addData("Pose source", poseSource);
         if (robot.shooter != null) {
@@ -345,7 +345,7 @@ public abstract class BaseTeleOp extends OpMode {
             telemetry.addData("Jam clear", robot.shooter != null && !robot.shooter.reversing()
                     ? "Waiting for flywheel to slow" : "Full reverse active");
         }
-        if (V4Settings.Telemetry.SHOW_TELEOP_DIAGNOSTICS) {
+        if (V5Settings.Telemetry.SHOW_TELEOP_DIAGNOSTICS) {
             reportHardware();
             if (follower != null) reportPose();
             telemetry.addData("Battery volts", robot.voltage());

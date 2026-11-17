@@ -7,7 +7,7 @@ import com.pedropathing.math.Pose;
 import com.pedropathing.paths.Path;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import org.firstinspires.ftc.teamcode.pedro.GoBuilda_V5.commands.MechanismCommands;
-import org.firstinspires.ftc.teamcode.pedro.GoBuilda_V5.config.V4Settings;
+import org.firstinspires.ftc.teamcode.pedro.GoBuilda_V5.config.V5Settings;
 
 import static com.pedropathing.ivy.groups.Groups.sequential;
 import static com.pedropathing.ivy.pedro.PedroCommands.follow;
@@ -16,9 +16,9 @@ import static com.pedropathing.ivy.pedro.PedroCommands.follow;
 public final class PrimaryShootParkLeft extends BaseAuto {
     // ROUTINE SETTINGS
     private static final long PARTNER_DELAY_MS = 2000;
-    private static final long SPINUP_DELAY_MS = V4Settings.Feeder.READY_TIMEOUT_MS;
-    private static final long FEED_WALL_TIMEOUT_MS = V4Settings.Feeder.FEED_WALL_TIMEOUT_MS;
-    private static final V4Settings.Preset SHOT_PRESET = V4Settings.Preset.NORMAL;
+    private static final long SPINUP_DELAY_MS = V5Settings.Feeder.READY_TIMEOUT_MS;
+    private static final long FEED_WALL_TIMEOUT_MS = V5Settings.Feeder.FEED_WALL_TIMEOUT_MS;
+    private static final V5Settings.Preset SHOT_PRESET = V5Settings.Preset.NORMAL;
     private static final long FEED_MS = 5000;
 
     // FIELD POSES — inches and degrees in the shared Red-authored field frame.
